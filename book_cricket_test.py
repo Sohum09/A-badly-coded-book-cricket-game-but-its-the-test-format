@@ -62,7 +62,7 @@ def map_prob_to_score(runs, wickets, aggression=0, outfield=0, pitch='NORMAL'):
     return runs, wickets
 
 def drawn_match(innings1, innings1_runs, innings1_wickets,  innings2, innings2_runs, innings2_wickets, innings3 = '', innings3_runs=0, innings3_wickets=0, innings4 = '', innings4_runs=0, innings4_wickets=0, target=0):
-    print("Exhausted alloted global ball quota!")
+    print("\nExhausted alloted global ball quota!")
     if innings1_wickets == 10:
         print(f"Innings 1: {innings1} - {innings1_runs} all out")
     else:
@@ -154,7 +154,7 @@ def match():
         if balls == 60 and pitch == 'GREEN':
             aggression = -1
             print("aggression changed to -1")
-        print(f"{innings1}: {runs}/{wickets}", end='\r')
+        print(f"{innings1}: {runs}/{wickets}, Overs {balls//6}.{balls%6}", end='\r')
 
     innings1_res = f'{innings1} - {runs} all out' if declareFlag == False else f'{innings1} - {runs}/{wickets} declared'
     if declareFlag == False:
@@ -200,11 +200,11 @@ def match():
             aggression = -1
             print("aggression changed to -1")
         if runs < innings1_runs:
-            print(f"{innings2}: {runs}/{wickets}, trail by {innings1_runs - runs}", end='\r')
+            print(f"{innings2}: {runs}/{wickets}, Overs {balls//6}.{balls%6}, trail by {innings1_runs - runs}", end='\r')
         elif runs > innings1_runs:
-            print(f"{innings2}: {runs}/{wickets}, lead by {runs - innings1_runs}", end='\r')
+            print(f"{innings2}: {runs}/{wickets}, Overs {balls//6}.{balls%6}, lead by {runs - innings1_runs}", end='\r')
         else:
-            print(f"{innings2}: {runs}/{wickets}, scores level", end='\r')
+            print(f"{innings2}: {runs}/{wickets}, Overs {balls//6}.{balls%6}, scores level", end='\r')
         
     innings2_res = f'{innings2} - {runs} all out' if declareFlag == False else f'{innings2} - {runs}/{wickets} declared'
     if declareFlag == False:
@@ -248,6 +248,7 @@ def match():
     print(f"Aggression = {aggression}")
     declareFlag = False
     runs, wickets = 0, 0
+    balls = 0
     while(True):
         declare = input().upper()
         if len(declare) > 0:
@@ -256,20 +257,21 @@ def match():
         if wickets >= 10:
             break
         runs, wickets = map_prob_to_score(runs, wickets, aggression, outfield, pitch)
+        balls += 1
         if not follow_on_flag:
             if runs + innings1_runs < innings2_runs:
-                print(f"{innings3}: {runs}/{wickets}, trail by {innings2_runs - runs - innings1_runs}", end='\r')
+                print(f"{innings3}: {runs}/{wickets}, Overs {balls//6}.{balls%6}, trail by {innings2_runs - runs - innings1_runs}", end='\r')
             elif runs + innings1_runs > innings2_runs:
-                print(f"{innings3}: {runs}/{wickets}, lead by {runs + innings1_runs - innings2_runs}", end='\r')
+                print(f"{innings3}: {runs}/{wickets}, Overs {balls//6}.{balls%6}, lead by {runs + innings1_runs - innings2_runs}", end='\r')
             else:
-                print(f"{innings3}: {runs}/{wickets}, scores level", end='\r')
+                print(f"{innings3}: {runs}/{wickets}, Overs {balls//6}.{balls%6}, scores level", end='\r')
         else:
             if runs + innings2_runs < innings1_runs:
-                print(f"{innings3}: {runs}/{wickets} (f/o), trail by {innings1_runs - runs - innings2_runs}", end='\r')
+                print(f"{innings3}: {runs}/{wickets} (f/o), Overs {balls//6}.{balls%6}, trail by {innings1_runs - runs - innings2_runs}", end='\r')
             elif runs + innings2_runs > innings1_runs:    
-                print(f"{innings3}: {runs}/{wickets} (f/o), lead by {runs + innings2_runs - innings1_runs}", end='\r')
+                print(f"{innings3}: {runs}/{wickets} (f/o), Overs {balls//6}.{balls%6}, lead by {runs + innings2_runs - innings1_runs}", end='\r')
             else:    
-                print(f"{innings3}: {runs}/{wickets} (f/o), scores level", end='\r')
+                print(f"{innings3}: {runs}/{wickets} (f/o), Overs {balls//6}.{balls%6}, scores level", end='\r')
         global_balls += 1
         if global_balls > global_ball_limit:
             drawn_match(innings1, innings1_runs, innings1_wickets, innings2, innings2_runs, innings2_wickets, innings3, runs, wickets)
@@ -296,6 +298,7 @@ def match():
 
     innings4 = ''
     target = 0
+    balls = 0
     if follow_on_flag:
         if runs + innings2_runs < innings1_runs:
             print("Results: ")
@@ -347,7 +350,8 @@ def match():
             target_met = True   
             break
         runs, wickets = map_prob_to_score(runs, wickets, aggression, outfield, pitch)
-        print(f"{innings4}: {runs}/{wickets}, need {target - runs} runs to win", end='\r')
+        balls += 1
+        print(f"{innings4}: {runs}/{wickets}, Overs {balls//6}.{balls%6}, need {target - runs} runs to win", end='\r')
         global_balls += 1
         if global_balls % 50 == 0:
             print(f"\nGlobal Ball count so far = {global_balls}/{global_ball_limit}")

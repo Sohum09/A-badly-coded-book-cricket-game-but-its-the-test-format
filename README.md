@@ -6,6 +6,8 @@ Just download the main file and run it on the closest Python supported IDE near 
 
 Changelog:
 
+Sep 6 2025: Update 2, Adjusted scoring rate to make it more realistic to test run rates
+
 Sep 5 2025: Update 1, Add support for overs.
 
 Sep 4 2025: Release

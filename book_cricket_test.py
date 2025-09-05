@@ -1,7 +1,7 @@
 import random
 
 '''
-Dot balls... 50% chance of 0 or the rest of the function executing.
+Dot balls... 80% chance of 0 or the rest of the function executing.
 
 Plan for conditions:
 Include a ball tracker
@@ -20,8 +20,8 @@ If fast: vals 7-9 will fetch a random between 1-2 and 10 will be 4.
 
 def map_prob_to_score(runs, wickets, aggression=0, outfield=0, pitch='NORMAL'):
     if pitch != 'NORMAL':
-        dot_ball = random.randint(0, 1)
-        if dot_ball:
+        dot_ball = random.randint(1, 10)
+        if dot_ball > 2:
             return runs, wickets
     val = random.randint(0, 10)
     if val == 0:
@@ -120,7 +120,8 @@ def match():
     else:
         if rain_affect < 3:
             print("Rain will affect the match!")
-            global_ball_limit = random.randint(1000, 2000)
+            global_ball_limit = random.randint(700, 1400
+                                               )
             print(f"New ball count = {global_ball_limit}")
 
     #----------Innings 1-------------

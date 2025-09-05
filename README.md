@@ -5,6 +5,7 @@ Written in Python in under two hours while under high fever.
 Just download the main file and run it on the closest Python supported IDE near you, nothing else is needed.
 
 Changelog:
-Sep 5 2025: Update 1: Add support for overs.
+
+Sep 5 2025: Update 1, Add support for overs.
 
 Sep 4 2025: Release

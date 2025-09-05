@@ -18,11 +18,15 @@ If fast: vals 7-9 will fetch a random between 1-2 and 10 will be 4.
 
 '''
 
-def map_prob_to_score(runs, wickets, aggression=0, outfield=0, pitch='NORMAL'):
+def map_prob_to_score(runs, wickets, aggression, outfield, pitch, innings, ball_count):
     if pitch != 'NORMAL':
         dot_ball = random.randint(1, 10)
-        if dot_ball > 2:
-            return runs, wickets
+        if innings < 3 and ball_count < random.randint(180, 300):
+            if dot_ball > 2:
+                return runs, wickets
+        else:
+            if dot_ball > 4:
+                return runs, wickets
     val = random.randint(0, 10)
     if val == 0:
         if aggression == -1:
@@ -146,7 +150,7 @@ def match():
             break
         if wickets >= 10:
             break
-        runs, wickets = map_prob_to_score(runs, wickets, aggression, outfield, pitch)
+        runs, wickets = map_prob_to_score(runs, wickets, aggression, outfield, pitch, 1, balls)
         balls += 1
         global_balls += 1
         if balls == 40 and pitch == 'GREEN':
@@ -188,7 +192,7 @@ def match():
             break
         if wickets >= 10:
             break
-        runs, wickets = map_prob_to_score(runs, wickets, aggression, outfield, pitch)
+        runs, wickets = map_prob_to_score(runs, wickets, aggression, outfield, pitch, 2, balls)
         balls += 1
         global_balls += 1
         if global_balls > global_ball_limit:
@@ -257,7 +261,7 @@ def match():
             break
         if wickets >= 10:
             break
-        runs, wickets = map_prob_to_score(runs, wickets, aggression, outfield, pitch)
+        runs, wickets = map_prob_to_score(runs, wickets, aggression, outfield, pitch, 3, balls)
         balls += 1
         if not follow_on_flag:
             if runs + innings1_runs < innings2_runs:
@@ -350,7 +354,7 @@ def match():
         if runs >= target:
             target_met = True   
             break
-        runs, wickets = map_prob_to_score(runs, wickets, aggression, outfield, pitch)
+        runs, wickets = map_prob_to_score(runs, wickets, aggression, outfield, pitch, 4, balls)
         balls += 1
         print(f"{innings4}: {runs}/{wickets}, Overs {balls//6}.{balls%6}, need {target - runs} runs to win", end='\r')
         global_balls += 1

@@ -1,7 +1,7 @@
 import random
 
 '''
-Dot balls... now dynamic.
+Dot balls... 80% chance of 0 or the rest of the function executing (now dynamic).
 
 Plan for conditions:
 Include a ball tracker
@@ -191,12 +191,13 @@ def match():
             break
         if wickets >= 10:
             break
-        runs, wickets = map_prob_to_score(runs, wickets, aggression, outfield, pitch, 2, balls)
-        balls += 1
-        global_balls += 1
         if global_balls > global_ball_limit:
             drawn_match(innings1, innings1_runs, innings1_wickets, innings2, runs, wickets)
             return
+        runs, wickets = map_prob_to_score(runs, wickets, aggression, outfield, pitch, 2, balls)
+        balls += 1
+        global_balls += 1
+        
         if balls == 30 and pitch == 'GREEN':
             aggression = 0
             print("aggression changed to 0")
@@ -260,6 +261,9 @@ def match():
             break
         if wickets >= 10:
             break
+        if global_balls > global_ball_limit:
+            drawn_match(innings1, innings1_runs, innings1_wickets, innings2, innings2_runs, innings2_wickets, innings3, runs, wickets)
+            return
         runs, wickets = map_prob_to_score(runs, wickets, aggression, outfield, pitch, 3, balls)
         balls += 1
         if not follow_on_flag:
@@ -277,9 +281,7 @@ def match():
             else:    
                 print(f"{innings3}: {runs}/{wickets} (f/o), Overs {balls//6}.{balls%6}, scores level", end='\r')
         global_balls += 1
-        if global_balls > global_ball_limit:
-            drawn_match(innings1, innings1_runs, innings1_wickets, innings2, innings2_runs, innings2_wickets, innings3, runs, wickets)
-            return
+        
 
     if not follow_on_flag:
         innings3_res = f'{innings3} - {runs} all out' if declareFlag == False else f'{innings3} - {runs}/{wickets} declared'
@@ -353,15 +355,15 @@ def match():
         if runs >= target:
             target_met = True   
             break
+        if global_balls > global_ball_limit:
+            drawn_match(innings1, innings1_runs, innings1_wickets, innings2, innings2_runs, innings2_wickets, innings3, innings3_runs, innings3_wickets, innings4, runs, wickets, target)
+            return
         runs, wickets = map_prob_to_score(runs, wickets, aggression, outfield, pitch, 4, balls)
         balls += 1
         print(f"{innings4}: {runs}/{wickets}, Overs {balls//6}.{balls%6}, need {target - runs} runs to win", end='\r')
         global_balls += 1
         if global_balls % 50 == 0:
             print(f"\nGlobal Ball count so far = {global_balls}/{global_ball_limit}")
-        if global_balls > global_ball_limit:
-            drawn_match(innings1, innings1_runs, innings1_wickets, innings2, innings2_runs, innings2_wickets, innings3, innings3_runs, innings3_wickets, innings4, runs, wickets, target)
-            return
 
     innings4_runs = runs #Final runs
     innings4_wickets = wickets

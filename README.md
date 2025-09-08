@@ -6,6 +6,8 @@ Just download the main file and run it on the closest Python supported IDE near 
 
 Changelog:
 
+Sep 8 2025: Update 3, Moved the code for drawn matches around to fix some sequence breaking bugs.
+
 Sep 6 2025: Update 2, Adjusted scoring rate to make it more realistic to test run rates. Also, global ball limit raised to match adjusted scoring rates and the rain-affecting part has also been accordingly tweaked.
 
 Sep 5 2025: Update 1, Add support for overs.

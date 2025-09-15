@@ -114,17 +114,17 @@ def match():
             innings1, innings2 = team1, team2
 
     global_balls = 0
-    global_ball_limit = 2000
+    global_ball_limit = 2700
     rain_affect = random.randint(1, 10)
     if team1.upper() in ['ENGLAND', 'SRI LANKA', 'NEW ZEALAND']:
         if rain_affect < 6:
             print("Rain will affect the match!")
-            global_ball_limit = random.randint(900, 2000)
+            global_ball_limit = random.randint(900, 2700)
             print(f"New ball count = {global_ball_limit}")
     else:
         if rain_affect < 3:
             print("Rain will affect the match!")
-            global_ball_limit = random.randint(900, 2000)
+            global_ball_limit = random.randint(900, 2700)
             print(f"New ball count = {global_ball_limit}")
 
     #----------Innings 1-------------
@@ -384,3 +384,4 @@ def match():
         print(f"{innings3} wins by {target - innings4_runs - 1} runs.")
 
 match()   
+

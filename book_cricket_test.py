@@ -132,6 +132,8 @@ def match():
     print("Press any key to declare. Otherwise, just hit enter to continue.")
     if pitch == 'GREEN':
         aggression = 1
+        threshold_0 = random.randint(40, 60)
+        threshold_neg1 = random.randint(70, 90)
     if pitch == 'DRY':
         aggression = random.randint(-1, 0)
     if pitch == 'FLAT':
@@ -152,13 +154,16 @@ def match():
         runs, wickets = map_prob_to_score(runs, wickets, aggression, outfield, pitch, 1, balls)
         balls += 1
         global_balls += 1
-        if balls == 40 and pitch == 'GREEN':
+        if balls % 480 == 0:
+            print(f"\nIt is New ball #{1 + balls//480}!")
+        if pitch == 'GREEN' and balls%480 == threshold_0:
             aggression = 0
             print("aggression changed to 0")
-        if balls == 60 and pitch == 'GREEN':
+        if pitch == 'GREEN' and balls%480 == threshold_neg1:
             aggression = -1
             print("aggression changed to -1")
-        print(f"{innings1}: {runs}/{wickets}, Overs {balls//6}.{balls%6}", end='\r')
+        run_rate = runs/(balls//6 + (balls%6)/6) if balls > 0 else 0
+        print(f"{innings1}: {runs}/{wickets}, Overs {balls//6}.{balls%6}, Run Rate = {run_rate:.02f}", end='\r')
 
     innings1_res = f'{innings1} - {runs} all out' if declareFlag == False else f'{innings1} - {runs}/{wickets} declared'
     if declareFlag == False:
@@ -174,6 +179,8 @@ def match():
     print("Press any key to declare. Otherwise, just hit enter to continue.")
     if pitch == 'GREEN':
         aggression = 1
+        threshold_0 = random.randint(30, 50)
+        threshold_neg1 = random.randint(60, 90)
     if pitch == 'DRY':
         aggression = random.randint(-1, 0)
     if pitch == 'FLAT':
@@ -197,19 +204,21 @@ def match():
         runs, wickets = map_prob_to_score(runs, wickets, aggression, outfield, pitch, 2, balls)
         balls += 1
         global_balls += 1
-        
-        if balls == 30 and pitch == 'GREEN':
+        if balls % 480 == 0:
+            print(f"\nIt is New ball #{1 + balls//480}!")
+        run_rate = runs/(balls//6 + (balls%6)/6) if balls > 0 else 0
+        if pitch == 'GREEN' and balls%480 == threshold_0:
             aggression = 0
             print("aggression changed to 0")
-        if balls == 60 and pitch == 'GREEN':
+        if pitch == 'GREEN' and balls%480 == threshold_neg1:
             aggression = -1
             print("aggression changed to -1")
         if runs < innings1_runs:
-            print(f"{innings2}: {runs}/{wickets}, Overs {balls//6}.{balls%6}, trail by {innings1_runs - runs}", end='\r')
+            print(f"{innings2}: {runs}/{wickets}, Overs {balls//6}.{balls%6}, Run Rate = {run_rate:.02f}, trail by {innings1_runs - runs}", end='\r')
         elif runs > innings1_runs:
-            print(f"{innings2}: {runs}/{wickets}, Overs {balls//6}.{balls%6}, lead by {runs - innings1_runs}", end='\r')
+            print(f"{innings2}: {runs}/{wickets}, Overs {balls//6}.{balls%6}, Run Rate = {run_rate:.02f}, lead by {runs - innings1_runs}", end='\r')
         else:
-            print(f"{innings2}: {runs}/{wickets}, Overs {balls//6}.{balls%6}, scores level", end='\r')
+            print(f"{innings2}: {runs}/{wickets}, Overs {balls//6}.{balls%6}, Run Rate = {run_rate:.02f}, scores level", end='\r')
         
     innings2_res = f'{innings2} - {runs} all out' if declareFlag == False else f'{innings2} - {runs}/{wickets} declared'
     if declareFlag == False:
@@ -266,20 +275,21 @@ def match():
             return
         runs, wickets = map_prob_to_score(runs, wickets, aggression, outfield, pitch, 3, balls)
         balls += 1
+        run_rate = runs/(balls//6 + (balls%6)/6) if balls > 0 else 0
         if not follow_on_flag:
             if runs + innings1_runs < innings2_runs:
-                print(f"{innings3}: {runs}/{wickets}, Overs {balls//6}.{balls%6}, trail by {innings2_runs - runs - innings1_runs}", end='\r')
+                print(f"{innings3}: {runs}/{wickets}, Overs {balls//6}.{balls%6}, Run Rate = {run_rate:.02f}, trail by {innings2_runs - runs - innings1_runs}", end='\r')
             elif runs + innings1_runs > innings2_runs:
-                print(f"{innings3}: {runs}/{wickets}, Overs {balls//6}.{balls%6}, lead by {runs + innings1_runs - innings2_runs}", end='\r')
+                print(f"{innings3}: {runs}/{wickets}, Overs {balls//6}.{balls%6}, Run Rate = {run_rate:.02f}, lead by {runs + innings1_runs - innings2_runs}", end='\r')
             else:
-                print(f"{innings3}: {runs}/{wickets}, Overs {balls//6}.{balls%6}, scores level", end='\r')
+                print(f"{innings3}: {runs}/{wickets}, Overs {balls//6}.{balls%6}, Run Rate = {run_rate:.02f}, scores level", end='\r')
         else:
             if runs + innings2_runs < innings1_runs:
-                print(f"{innings3}: {runs}/{wickets} (f/o), Overs {balls//6}.{balls%6}, trail by {innings1_runs - runs - innings2_runs}", end='\r')
+                print(f"{innings3}: {runs}/{wickets} (f/o), Overs {balls//6}.{balls%6}, Run Rate = {run_rate:.02f}, trail by {innings1_runs - runs - innings2_runs}", end='\r')
             elif runs + innings2_runs > innings1_runs:    
-                print(f"{innings3}: {runs}/{wickets} (f/o), Overs {balls//6}.{balls%6}, lead by {runs + innings2_runs - innings1_runs}", end='\r')
+                print(f"{innings3}: {runs}/{wickets} (f/o), Overs {balls//6}.{balls%6}, Run Rate = {run_rate:.02f}, lead by {runs + innings2_runs - innings1_runs}", end='\r')
             else:    
-                print(f"{innings3}: {runs}/{wickets} (f/o), Overs {balls//6}.{balls%6}, scores level", end='\r')
+                print(f"{innings3}: {runs}/{wickets} (f/o), Overs {balls//6}.{balls%6}, Run Rate = {run_rate:.02f}, scores level", end='\r')
         global_balls += 1
         
 
@@ -360,7 +370,8 @@ def match():
             return
         runs, wickets = map_prob_to_score(runs, wickets, aggression, outfield, pitch, 4, balls)
         balls += 1
-        print(f"{innings4}: {runs}/{wickets}, Overs {balls//6}.{balls%6}, need {target - runs} runs to win", end='\r')
+        run_rate = runs/(balls//6 + (balls%6)/6) if balls > 0 else 0
+        print(f"{innings4}: {runs}/{wickets}, Overs {balls//6}.{balls%6}, Run Rate = {run_rate:.02f}, need {target - runs} runs to win", end='\r')
         global_balls += 1
         if global_balls % 50 == 0:
             print(f"\nGlobal Ball count so far = {global_balls}/{global_ball_limit}")
@@ -384,4 +395,3 @@ def match():
         print(f"{innings3} wins by {target - innings4_runs - 1} runs.")
 
 match()   
-

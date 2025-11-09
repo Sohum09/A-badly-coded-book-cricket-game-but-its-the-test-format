@@ -6,6 +6,8 @@ Just download the main file and run it on the closest Python supported IDE near 
 
 Changelog:
 
+Nov 9 2025: Update 6, added a random pitch mode, where it selects one of the pitches at random after a team wins the toss and decides on what to do. Also cleaned up a few facets of the code here and there.
+
 Sep 24 2025: Update 5, added support for run rates and added new ball support for green pitches.
 
 Sep 15 2025: Update 4, finally raised the ball limit to 2700 (90 overs per day) and made changes accordingly.

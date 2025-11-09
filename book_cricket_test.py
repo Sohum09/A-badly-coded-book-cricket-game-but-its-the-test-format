@@ -1,15 +1,16 @@
 import random
 
 '''
-Dot balls... 80% chance of 0 or the rest of the function executing (now dynamic).
+Dot balls... are now dynamic, check values in map_prob_to_score function
+Include a ball tracker and run rate tracker
 
 Plan for conditions:
-Include a ball tracker
-Pitches = NORMAL, GREEN, DRY, FLAT
-No changes if normal
-Green: For upto 40-50 (yet to finalize) balls bowled, Aggression = 1 for Innings 1, 2 and 0 thereafter; 0 for Innings 3 and 4
+Pitches = NORMAL, GREEN, DRY, FLAT, RANDOM
+No changes if normal, aggresion remains 0 for all innings (i.e. balanced while weighted in favour of bowlers)
+Green: For upto 40-50 (yet to finalize) balls bowled, Aggression = 1 then 0 and finally -1 for Innings 1, 2; Random of (0, -1) for Innings 3 and 4
 Dry: For innings 1, 2, random change between Aggression = 0 and Aggression = -1, random chance between 0 and 1 for innings 3 and 4
 Flat: For innings 1, 2, random change between Aggression = 0 and Aggression = -1, random chance between -1 and 0 for innings 3 and 4
+Random: Select one of NORMAL, GREEN, DRY, or FLAT at random after the toss is bowled and innings order is decided. Max chaos!
 
 Outfield: Slow, Normal, Fast
 If slow: val = 10 will fetch 2 instead of 4 and vals 7-9 will fetch a random number between 0-1
@@ -19,15 +20,17 @@ If fast: vals 7-9 will fetch a random between 1-2 and 10 will be 4.
 '''
 
 def map_prob_to_score(runs, wickets, aggression, outfield, pitch, innings, ball_count):
-    if pitch != 'NORMAL':
-        dot_ball = random.randint(1, 10)
-        if innings < 3 and ball_count < random.randint(180, 300):
-            if dot_ball > random.randint(1, 4):
-                return runs, wickets
-        else:
-            if dot_ball > random.randint(2, 5):
-                return runs, wickets
+    #Logic for dot ball generation...
+    dot_ball = random.randint(1, 10)
+    if innings < 3 and ball_count < random.randint(180, 300):
+        if dot_ball > random.randint(1, 4):
+            return runs, wickets
+    else:
+        if dot_ball > random.randint(2, 5):
+            return runs, wickets
+
     val = random.randint(0, 10)
+
     if val == 0:
         if aggression == -1:
             x = random.randint(0, 1)
@@ -92,7 +95,7 @@ def match():
     print("What? It's a text based game, deal with it.")
     team1 = input("Enter Team 1: ")
     team2 = input("Enter Team 2: ")
-    pitch = input("Select Pitch [NORMAL, GREEN, DRY, FLAT]: ").upper()
+    pitch = input("Select Pitch [NORMAL, GREEN, DRY, FLAT, RANDOM]: ").upper()
     outfield = random.choice([-1, 0, 1]) #Slow, Normal, Fast
     print("Outfield selected = ", outfield)
     innings1, innings2 = '', ''
@@ -112,7 +115,9 @@ def match():
             innings1, innings2 = team2, team1
         else:
             innings1, innings2 = team1, team2
-
+    if pitch == 'RANDOM':
+        pitch = random.choice(['NORMAL', 'GREEN', 'DRY', 'FLAT'])
+        print(f"Random pitch selected = {pitch}")
     global_balls = 0
     global_ball_limit = 2700
     rain_affect = random.randint(1, 10)
@@ -329,7 +334,7 @@ def match():
             print(f"Target for {innings4} = {target}")
     else:
         if runs + innings1_runs < innings2_runs:
-            print("Results: ")
+            print("------------------------------------End of match----------------------------------")
             print(f"Innings 1: {innings1_res}")
             print(f"Innings 2: {innings2_res}")
             print(f"Innings 3: {innings3_res}")
